@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_chroma import Chroma
+from langchain.vectorstores import Chroma
 from dotenv import load_dotenv
 import os
 
