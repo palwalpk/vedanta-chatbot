@@ -13,13 +13,8 @@ load_dotenv()
 folder_path = "./vedanta_texts"
 api_key = st.secrets.get("OPENAI_API_KEY")
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    #format="%(asctime)s [%(levelname)s] %(message)s",
-)
-
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 logger.info("api_key from Secrets" ,api_key)
 # Initialize LLM
 llm = ChatOpenAI(temperature=0, model="gpt-4", api_key=api_key)
@@ -36,7 +31,7 @@ def load_all_pdfs_from_folder(folder_path):
             docs = loader.load()
             all_docs.extend(docs)
         logger.info(" loading files done  ")
-    return all_docs
+        return all_docs
 
 
 # Cache vector DB so it's not reloaded every time
