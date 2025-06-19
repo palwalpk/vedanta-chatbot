@@ -15,6 +15,8 @@ splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 chunks = splitter.split_documents(docs)
 
 embeddings = OpenAIEmbeddings()
-db = Chroma.from_documents(chunks, embeddings, persist_directory="./db")
+#In-Memory Chroma: Doesn’t use SQLite since Streamlit Cloud is not supporting it
+#db = Chroma.from_documents(chunks, embeddings, persist_directory="./db")
+db = Chroma.from_documents(chunks, embeddings, persist_directory=None)
 db.persist()
 print("Indexing complete.")
