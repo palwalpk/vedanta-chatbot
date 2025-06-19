@@ -1,7 +1,7 @@
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
 import os
 
@@ -16,4 +16,5 @@ chunks = splitter.split_documents(docs)
 
 embeddings = OpenAIEmbeddings()
 db = Chroma.from_documents(chunks, embeddings, persist_directory="./db")
+db.persist()
 print("Indexing complete.")
