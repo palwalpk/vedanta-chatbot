@@ -8,7 +8,9 @@ import os
 load_dotenv()
 
 llm = ChatOpenAI(temperature=0, model="gpt-4")
-db = Chroma(persist_directory="./db", embedding_function=OpenAIEmbeddings())
+#In-Memory Chroma: Doesn’t use SQLite since Streamlit Cloud is not supporting it
+#db = Chroma(persist_directory="./db", embedding_function=OpenAIEmbeddings())
+db = Chroma(persist_directory=None, embedding_function=OpenAIEmbeddings())
 qa = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
 
 while True:
