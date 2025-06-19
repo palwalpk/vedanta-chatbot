@@ -9,9 +9,9 @@ from langchain.chains import RetrievalQA
 
 # Load .env or Streamlit secrets
 load_dotenv()
-#api_key = st.secrets.get("OPENAI_API_KEY")
-api_key=os.getenv("OPENAI_API_KEY")
-st.write("api_key" ,api_key)
+api_key = st.secrets.get("OPENAI_API_KEY")
+#api_key=os.getenv("OPENAI_API_KEY")
+st.write("api_key from Secrets" ,api_key)
 # Initialize LLM
 llm = ChatOpenAI(temperature=0, model="gpt-4", api_key=api_key)
 embeddings = OpenAIEmbeddings(api_key=api_key)
