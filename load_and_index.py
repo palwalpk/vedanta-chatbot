@@ -1,6 +1,6 @@
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
 import os
@@ -17,6 +17,12 @@ chunks = splitter.split_documents(docs)
 embeddings = OpenAIEmbeddings()
 #In-Memory Chroma: Doesn’t use SQLite since Streamlit Cloud is not supporting it
 #db = Chroma.from_documents(chunks, embeddings, persist_directory="./db")
-db = Chroma.from_documents(chunks, embeddings, persist_directory=None)
-db.persist()
+
+db = Chroma.from_documents(
+    chunks,  # ← this should be your list of Document objects
+    OpenAIEmbeddings(),
+    persist_directory=None  # in-memory, not persisted
+)
 print("Indexing complete.")
+
+
