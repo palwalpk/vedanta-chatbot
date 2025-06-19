@@ -12,7 +12,15 @@ from langchain.chains import RetrievalQA
 load_dotenv()
 folder_path = "./vedanta_texts"
 api_key = st.secrets.get("OPENAI_API_KEY")
-logging.info("api_key from Secrets" ,api_key)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+logger.info("api_key from Secrets" ,api_key)
 # Initialize LLM
 llm = ChatOpenAI(temperature=0, model="gpt-4", api_key=api_key)
 embeddings = OpenAIEmbeddings(api_key=api_key)
@@ -21,11 +29,13 @@ embeddings = OpenAIEmbeddings(api_key=api_key)
 def load_all_pdfs_from_folder(folder_path):
     all_docs = []
     for filename in os.listdir(folder_path):
+        logger.info(" loading files  ", filename)
         if filename.endswith(".pdf"):
             file_path = os.path.join(folder_path, filename)
             loader = PyMuPDFLoader(file_path)
             docs = loader.load()
             all_docs.extend(docs)
+        logger.info(" loading files done  ")
     return all_docs
 
 
@@ -36,9 +46,11 @@ def load_faiss():
    # loader = PyMuPDFLoader("01-Atma-Bodha-Class-Notes.pdf")  # Make sure this PDF is in your root folder
     #docs = loader.load()
     docs = load_all_pdfs_from_folder(folder_path)
+    logger.info(" splitter Started  ")
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    chunks = splitter.split_documents(docs)
 
+    chunks = splitter.split_documents(docs)
+    logger.info(" splitter done in chunks  ")
     # Create FAISS index (in-memory)
     return FAISS.from_documents(chunks, embeddings)
 
