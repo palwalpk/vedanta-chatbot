@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-import logging
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -13,13 +12,9 @@ load_dotenv()
 folder_path = "./vedanta_texts"
 api_key = st.secrets.get("OPENAI_API_KEY")
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.info("api_key from Secrets" ,api_key)
 # Initialize LLM
 llm = ChatOpenAI(temperature=0, model="gpt-4", api_key=api_key)
 embeddings = OpenAIEmbeddings(api_key=api_key)
-
 
 
 def load_all_pdfs_from_folder(folder_path):
@@ -28,7 +23,7 @@ def load_all_pdfs_from_folder(folder_path):
         if filename.endswith(".pdf"):
             file_path = os.path.join(folder_path, filename)
             print("Processing {}".format(file_path))
-            st.write("Source of Vedanta Information {}".format(file_path))
+           # st.write("Source of Vedanta Information {}".format(file_path))
             loader = PyMuPDFLoader(file_path)
             docs = loader.load()
             all_docs.extend(docs)
