@@ -21,19 +21,18 @@ llm = ChatOpenAI(temperature=0, model="gpt-4", api_key=api_key)
 embeddings = OpenAIEmbeddings(api_key=api_key)
 
 
+
 def load_all_pdfs_from_folder(folder_path):
     all_docs = []
     for filename in os.listdir(folder_path):
-        logger.info(" loading files  ", filename)
         if filename.endswith(".pdf"):
             file_path = os.path.join(folder_path, filename)
-            st.write("Sources of Information :" ,filename)
+            print("Processing {}".format(file_path))
+            st.write("Source of Information {}".format(file_path))
             loader = PyMuPDFLoader(file_path)
             docs = loader.load()
             all_docs.extend(docs)
-        logger.info(" loading files done  ")
-        return all_docs
-
+    return all_docs
 
 # Cache vector DB so it's not reloaded every time
 @st.cache_resource
@@ -42,11 +41,11 @@ def load_faiss():
    # loader = PyMuPDFLoader("01-Atma-Bodha-Class-Notes.pdf")  # Make sure this PDF is in your root folder
     #docs = loader.load()
     docs = load_all_pdfs_from_folder(folder_path)
-    logger.info(" splitter Started  ")
+
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
     chunks = splitter.split_documents(docs)
-    logger.info(" splitter done in chunks  ")
+
     # Create FAISS index (in-memory)
     return FAISS.from_documents(chunks, embeddings)
 
