@@ -27,6 +27,7 @@ def load_all_pdfs_from_folder(folder_path):
         logger.info(" loading files  ", filename)
         if filename.endswith(".pdf"):
             file_path = os.path.join(folder_path, filename)
+            st.write("Sources of Information :" ,filename)
             loader = PyMuPDFLoader(file_path)
             docs = loader.load()
             all_docs.extend(docs)
